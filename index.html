@@ -9,13 +9,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #06091A;
-      --nav: #080C1F;
+      --bg: #F4F4F5;
+      --nav: #FFFFFF;
+      --text: #18181B;
+      --muted: #71717A;
+      --border: #E4E4E7;
       --accent: #2563EB;
       --accent-light: #3B82F6;
-      --text: #FFFFFF;
-      --muted: #94A3B8;
-      --border: rgba(255,255,255,0.08);
       --header-h: 64px;
     }
 
@@ -40,21 +40,18 @@
       z-index: 10;
     }
 
-    .logo img { height: 28px; display: block; }
-
-    .header-right { display: flex; align-items: center; gap: 16px; }
-
-    .tagline { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .logo img { height: 26px; display: block; }
+    .header-right { display: flex; align-items: center; gap: 14px; }
+    .tagline { font-size: 13px; color: var(--muted); font-weight: 400; }
 
     .pill {
-      background: rgba(37,99,235,0.15);
-      border: 1px solid rgba(37,99,235,0.3);
-      color: var(--accent-light);
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: var(--accent);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 500;
       padding: 4px 12px;
       border-radius: 99px;
-      letter-spacing: 0.03em;
     }
 
     #calendly-embed {
@@ -64,6 +61,7 @@
       width: 100%;
       height: calc(100vh - var(--header-h));
       overflow: hidden;
+      background: var(--bg);
     }
 
     #calendly-embed .calendly-inline-widget,
@@ -78,7 +76,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(6,9,26,0.92);
+      background: rgba(244,244,245,0.94);
       backdrop-filter: blur(8px);
       z-index: 100;
       flex-direction: column;
@@ -91,17 +89,16 @@
     #success-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     .check-ring {
-      width: 80px; height: 80px;
+      width: 72px; height: 72px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      background: var(--accent);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 24px;
-      box-shadow: 0 0 0 12px rgba(37,99,235,0.12), 0 0 0 24px rgba(37,99,235,0.06);
+      margin-bottom: 20px;
       animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1);
     }
 
@@ -111,23 +108,23 @@
     }
 
     .check-ring svg {
-      width: 38px; height: 38px;
+      width: 34px; height: 34px;
       stroke: #fff; stroke-width: 2.5;
       fill: none; stroke-linecap: round; stroke-linejoin: round;
     }
 
-    .success-title { font-size: 30px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
-    .success-sub { font-size: 16px; color: var(--muted); margin-bottom: 36px; }
+    .success-title { font-size: 26px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .success-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.5; }
 
     .bar-track {
-      width: 260px; height: 3px;
-      background: rgba(255,255,255,0.1);
+      width: 240px; height: 3px;
+      background: var(--border);
       border-radius: 99px; overflow: hidden;
     }
 
     .bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #2563EB, #60A5FA);
+      background: var(--accent);
       border-radius: 99px;
       width: 100%;
       animation: drain 4s linear forwards;
@@ -138,7 +135,7 @@
       to   { width: 0%; }
     }
 
-    .reset-label { margin-top: 12px; font-size: 13px; color: var(--muted); }
+    .reset-label { margin-top: 10px; font-size: 13px; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -166,14 +163,16 @@
   </div>
 
   <script>
+    var CALENDLY_BASE = 'https://calendly.com/shipbots/mikey?hide_gdpr_banner=1';
+
     function initCalendly() {
+      var url = CALENDLY_BASE + '&t=' + Date.now();
       Calendly.initInlineWidget({
-        url: 'https://calendly.com/shipbots/mikey?hide_gdpr_banner=1&background_color=06091A&text_color=FFFFFF&primary_color=2563EB',
+        url: url,
         parentElement: document.getElementById('calendly-embed'),
       });
     }
 
-    // Load Calendly script dynamically — init only after it's ready
     var script = document.createElement('script');
     script.src = 'https://assets.calendly.com/assets/external/widget.js';
     script.onload = function() { initCalendly(); };
@@ -187,10 +186,8 @@
 
     function showSuccess() {
       var overlay = document.getElementById('success-overlay');
-      var track = overlay.querySelector('.bar-track');
-      track.innerHTML = '<div class="bar-fill"></div>';
+      overlay.querySelector('.bar-track').innerHTML = '<div class="bar-fill"></div>';
       overlay.classList.add('show');
-
       setTimeout(function() {
         overlay.classList.remove('show');
         document.getElementById('calendly-embed').innerHTML = '';
