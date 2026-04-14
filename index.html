@@ -15,7 +15,6 @@
       --muted: #71717A;
       --border: #E4E4E7;
       --accent: #2563EB;
-      --accent-light: #3B82F6;
       --header-h: 64px;
     }
 
@@ -76,7 +75,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(244,244,245,0.94);
+      background: rgba(244,244,245,0.96);
       backdrop-filter: blur(8px);
       z-index: 100;
       flex-direction: column;
@@ -163,12 +162,9 @@
   </div>
 
   <script>
-    var CALENDLY_BASE = 'https://calendly.com/shipbots/mikey?hide_gdpr_banner=1';
-
     function initCalendly() {
-      var url = CALENDLY_BASE + '&t=' + Date.now();
       Calendly.initInlineWidget({
-        url: url,
+        url: 'https://calendly.com/shipbots/mikey?hide_gdpr_banner=1',
         parentElement: document.getElementById('calendly-embed'),
       });
     }
@@ -188,10 +184,10 @@
       var overlay = document.getElementById('success-overlay');
       overlay.querySelector('.bar-track').innerHTML = '<div class="bar-fill"></div>';
       overlay.classList.add('show');
+
+      // Full page reload — only way to guarantee zero cached autofill data
       setTimeout(function() {
-        overlay.classList.remove('show');
-        document.getElementById('calendly-embed').innerHTML = '';
-        initCalendly();
+        window.location.reload(true);
       }, 4000);
     }
   </script>
